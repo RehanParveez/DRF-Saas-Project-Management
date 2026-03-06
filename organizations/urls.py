@@ -1,5 +1,11 @@
-from django.urls import path
+from organizations.views import OrganizationViewset, MembershipViewset
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+
+router = DefaultRouter()
+router.register(r'organization', OrganizationViewset, basename='organization')
+router.register(r'membership', MembershipViewset, basename='membership')
 
 urlpatterns = [
-    
+    path('', include(router.urls)),
 ]

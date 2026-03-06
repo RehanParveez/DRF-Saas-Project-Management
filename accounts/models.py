@@ -8,7 +8,7 @@ class User(AbstractUser):
     profession = models.CharField(max_length=25)
     dob = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
