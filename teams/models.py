@@ -7,8 +7,8 @@ class Team(models.Model):
     name = models.CharField(max_length=25)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='teams')
     description = models.TextField()
-    members = models.ManyToManyField(User, related_name="teams")
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='teams')
+    members = models.ManyToManyField(User, related_name='teams')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_teams')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
