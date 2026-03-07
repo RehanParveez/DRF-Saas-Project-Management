@@ -11,7 +11,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.author
+        return self.author.username
     
 class File(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='files')

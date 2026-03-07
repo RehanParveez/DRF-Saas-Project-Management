@@ -23,7 +23,7 @@ urlpatterns = [
     path('organizations/', include('organizations.urls')),
     path('teams/', include('teams.urls')),
     path('projects/', include('projects.urls')),
-    path('teams/', include('teams.urls')),
+    path('tasks/', include('tasks.urls')),
     path('activities/', include('activities.urls')),
     path('notifications/', include('notifications.urls')),
 ]

@@ -31,7 +31,7 @@ class Membership(models.Model):
         unique_together = ['user', 'organization']
     
     def __str__(self):
-        return self.user
+        return self.user.username
     
     
     

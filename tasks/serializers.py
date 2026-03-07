@@ -18,5 +18,5 @@ class TaskSerializer(serializers.ModelSerializer):
     files = FileSerializer1(many=True, read_only=True)
     class Meta:
         model = Task
-        fields = ['title', 'description', 'project', 'board', 'assignee', 'comments', 'created_by', 'status', 'due_date', 'tags', 'created_at', 'updated_at']
+        fields = ['title', 'description', 'project', 'board', 'assignee', 'comments', 'subtasks', 'files', 'created_by', 'status', 'due_date', 'tags', 'created_at', 'updated_at']
               
