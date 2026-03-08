@@ -7,9 +7,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from tasks.pagination import TaskPagination
 from rest_framework.decorators import action
+from accounts.models import User
 from rest_framework.response import Response
 from activities.models import Comment
-
+from django.db import transaction
+from notifications.models import Activity
 
 # Create your views here.
 class TagViewset(viewsets.ModelViewSet):
@@ -41,6 +43,20 @@ class TaskViewset(viewsets.ModelViewSet):
     def get_queryset(self):
       return Task.objects.filter(project__organization__memberships__user=self.request.user, project__organization__memberships__is_active=True).distinct()
   
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+       serializer = self.get_serializer(data=request.data)
+       serializer.is_valid(raise_exception=True)
+       task = serializer.save()
+       subtasks = request.data.get('subtasks')
+       
+       if subtasks:
+           for subtask in subtasks:
+               SubTask.objects.create(task=task, title=subtask.get('title'), is_completed=False)
+       Activity.objects.create(user=request.user, task=task, action='task is created')
+       return Response(serializer.data)
+   
+    @transaction.atomic
     @action(detail=True, methods=['post'])
     def task(self, request, pk=None):
       task = self.get_object()
@@ -48,11 +64,12 @@ class TaskViewset(viewsets.ModelViewSet):
       
       user = User.objects.filter(id=user_id).first()
       if not user:
-        return Response({'err': 'no user'}, status=404)
-        task.assignee = user
-        task.save()
+         return Response({'err': 'no user'}, status=404)
+      task.assignee = user
+      task.save()
       return Response({'msg': 'task not given'})
-  
+    
+    @transaction.atomic
     @action(detail=True, methods=['post'])
     def status(self, request, pk=None):
       task = self.get_object()
@@ -61,13 +78,15 @@ class TaskViewset(viewsets.ModelViewSet):
       task.save()
       return Response({'msg': 'task is updated'})
     
+    @transaction.atomic
     @action(detail=True, methods=['post'])
     def completed(self, request, pk=None):
       task = self.get_object()
       task.status = 'completed'
       task.save() 
       return Response({'msg': 'task is completed'})
-
+    
+    transaction.atomic
     @action(detail=True, methods=['post'])
     def comment(self, request, pk=None):
       task = self.get_object()

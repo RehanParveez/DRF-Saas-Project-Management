@@ -51,3 +51,21 @@ Now the use of these methods like:
 . has_permission method is about -> allowing the general level access means using the permission logic even before entering the view.
 . has_object_permission method is about -> allowing the access of object/instance like for example if a member is allowed to create or delete a task which is given to them.
 
+
+## Addition of Transaction.atomic:
+
+# What is the use of @transaction.atomic?
+
+. The transaction.atomic used in the form of a decorator is a simple is a django logic feature which helps makeing the group of database operations very clear like if all the steps are successful than -> everything is saved in the database, but if any of the group of steps fails -> then nothing is saved in the database.
+
+# Its use in the taskviewset:
+
+In the taskviewset first i simply imported the transaction and then by using the transaction.atomic decorator added a method of create which simply saves a new task, then its related subtasks and then also handles the activity of creating all of this as well. 
+. so this create method basically validates the data first and then it creates the task and any subtasks related to it and finally it validates the the record of any activity which happened.
+
+-- Outside this create method used the @transaction.atomic decorator over the already existing actions in the taskviewset like task, comment, status, and completed.
+
+-- So this transaction.atomic logic is helping in all these related multiple operations like creating a task with its subtasks or updating the status, methods like these they work togetherr and as per the defination of the transaction.atomic decorator:
+
+. Like if any step fails, then no half progress is saved this thing mainly it is preventing in the taskviewset.
+
