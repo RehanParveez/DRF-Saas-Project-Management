@@ -21,5 +21,5 @@ class TeamViewset(viewsets.ModelViewSet):
     def get_queryset(self):
         return Team.objects.filter(organization__memberships__user=self.request.user, organization__memberships__is_active=True).distinct()
     
- 
+   
 

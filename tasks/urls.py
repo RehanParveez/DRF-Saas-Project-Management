@@ -4,7 +4,7 @@ from django.urls import path, include
 
 router = DefaultRouter()
 router.register(r'tag', TagViewset, basename='tag')
-router.register(r'task', TaskViewset, basename='task')
+router.register(r'tasks', TaskViewset, basename='task')
 router.register(r'subtask', SubTaskViewset, basename='subtask')
 
 urlpatterns = [
