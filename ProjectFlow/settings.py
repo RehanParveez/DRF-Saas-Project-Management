@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ProjectFlow.middleware.ApiRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'ProjectFlow.urls'

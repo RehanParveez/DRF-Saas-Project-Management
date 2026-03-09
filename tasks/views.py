@@ -53,7 +53,7 @@ class TaskViewset(viewsets.ModelViewSet):
        if subtasks:
            for subtask in subtasks:
                SubTask.objects.create(task=task, title=subtask.get('title'), is_completed=False)
-       Activity.objects.create(user=request.user, task=task, action='task is created')
+       Activity.objects.create(user=request.user, task=task, work='task is created')
        return Response(serializer.data)
    
     @transaction.atomic

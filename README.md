@@ -69,3 +69,22 @@ In the taskviewset first i simply imported the transaction and then by using the
 
 . Like if any step fails, then no half progress is saved this thing mainly it is preventing in the taskviewset.
 
+
+## Addition of the Signals Logic:
+In this project i added two signals in the tasks app, which are:
+
+# creating_task:
+. This creating task signal first creating task signal has the logic of running automatically like whenever a new task is created/updated,
+. Furhter tt is about checking like whether the specific task is new or any previous task is just been updated,
+. Next it has the logic of createing a simple record in the table of Activity, which is a model in the notifications app, and this record will show the user and the work performed, means which user performed which specific work.
+
+# comment_notification:
+. Next this comment_notification signal has the logic of running automatically similar to last signal but in this the difference is it will run whenever a new comment is added inside the given task,
+. Furhter it will give a simple notification for showing like who is the creator of the task and then next it gives the notification which has the information related to like which specific person added the comment and which task it was in which he added the comment.
+
+## Addition of the Middleware Logic:
+-- Next i did the addition of the middleware logic in the project level folder by creating a middleware class:
+
+# ApiRequestMiddleware:
+. This middleware class of ApiRequestMiddleware has the logic like it will run on the every API request which is made by an authenticated user,
+. Further it records some specific details like about the user, HTTP methods like GET, POST, etc, and also about the requested path of the API, and the each request it gives it is going to be saved in the apirequest table present in the database, which was generated after i added hte apirequest model in the notifications app.
