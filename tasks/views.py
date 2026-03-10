@@ -13,6 +13,7 @@ from activities.models import Comment
 from django.db import transaction
 from notifications.models import Activity
 from tasks.celery_tasks import task_email
+from django.core.cache import cache
 
 # Create your views here.
 class TagViewset(viewsets.ModelViewSet):
@@ -43,7 +44,22 @@ class TaskViewset(viewsets.ModelViewSet):
     
     def get_queryset(self):
       return Task.objects.filter(project__organization__memberships__user=self.request.user, project__organization__memberships__is_active=True).distinct()
-  
+    
+    def list(self, request, *args, **kwargs):
+      print('calling task list view')
+      key = f'tasks{request.user.id}'
+      cached_data = cache.get(key)
+      
+      if cached_data:
+        print('returned from cache')
+        return Response(cached_data)
+      
+      print('getting from db and caching')
+      queryset = self.get_queryset()
+      serializer = self.get_serializer(queryset, many=True)
+      cache.set(key, serializer.data, 50)
+      return Response(serializer.data)
+    
     @transaction.atomic
     def create(self, request, *args, **kwargs):
        serializer = self.get_serializer(data=request.data)
@@ -54,6 +70,9 @@ class TaskViewset(viewsets.ModelViewSet):
        if subtasks:
            for subtask in subtasks:
                SubTask.objects.create(task=task, title=subtask.get('title'), is_completed=False)
+               
+       cache.delete(f'tasks{request.user.id}')
+       
        Activity.objects.create(user=request.user, task=task, work='task is created')
        if task.assignee:
          task_email.delay(task.assignee.email, task.title)

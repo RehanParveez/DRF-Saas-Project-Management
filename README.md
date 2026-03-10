@@ -88,3 +88,16 @@ In this project i added two signals in the tasks app, which are:
 # ApiRequestMiddleware:
 . This middleware class of ApiRequestMiddleware has the logic like it will run on the every API request which is made by an authenticated user,
 . Further it records some specific details like about the user, HTTP methods like GET, POST, etc, and also about the requested path of the API, and the each request it gives it is going to be saved in the apirequest table present in the database, which was generated after i added hte apirequest model in the notifications app.
+
+
+## Use of Caching logic:
+. In this project for practice the addition of the caching logic is about the addition of the caching through redis for the frequently called on endpoints like for the taskviewset and the projectviewset.
+
+. Firstly i have added simple list methods in both these viewsets which according to the logic first check whether the data for the user is in the cache or not,
+
+. Then if the cached data is present then it is directly returned like without writing the extra queries to get the data from the database,
+
+. And in case if this not the reality like the cached data is not present then the data is extracted from the database, it is serialized and after doing this it is stored in the redis refernce database so that in the future requests can be made to get the data from here which,
+
+. then next after this the automatic clearing of the cache is also done in the create methods of these both viewsets, like whenever a new task or a project is added, then the old cached data is cleared.
+
