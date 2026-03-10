@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from activities.models import Comment
 from django.db import transaction
 from notifications.models import Activity
+from tasks.celery_tasks import task_email
 
 # Create your views here.
 class TagViewset(viewsets.ModelViewSet):
@@ -54,6 +55,8 @@ class TaskViewset(viewsets.ModelViewSet):
            for subtask in subtasks:
                SubTask.objects.create(task=task, title=subtask.get('title'), is_completed=False)
        Activity.objects.create(user=request.user, task=task, work='task is created')
+       if task.assignee:
+         task_email.delay(task.assignee.email, task.title)
        return Response(serializer.data)
    
     @transaction.atomic
@@ -82,11 +85,11 @@ class TaskViewset(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def completed(self, request, pk=None):
       task = self.get_object()
-      task.status = 'completed'
+      task.status = 'done'
       task.save() 
       return Response({'msg': 'task is completed'})
     
-    transaction.atomic
+    @transaction.atomic
     @action(detail=True, methods=['post'])
     def comment(self, request, pk=None):
       task = self.get_object()
