@@ -28,6 +28,7 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
     path('activities/', include('activities.urls')),
     path('notifications/', include('notifications.urls')),
+    path('reports/', include('reports.urls')),
     # JWT Authentication Urls
     path('tokenobtain/', TokenObtainPairView.as_view(), name='token_obtain'),
     path('tokenrefresh/', TokenRefreshView.as_view(), name='token_refresh'),

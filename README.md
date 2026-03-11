@@ -101,3 +101,22 @@ In this project i added two signals in the tasks app, which are:
 
 . then next after this the automatic clearing of the cache is also done in the create methods of these both viewsets, like whenever a new task or a project is added, then the old cached data is cleared.
 
+
+## Use of reporting APIs:
+
+. In this project the addition of the reporting apis is related to creating the endpoints which are providing the important statistics related to tasks, projects, and work of a team and which shows the progress and the productivity of a team.
+
+- the following are the added actions in the reportviewset:
+
+# 1. completed_task:
+. This first action which is completed task it helps in calculating the count like how many tasks have been completed by the each user. in it the use of filter and the annotate methods is done in order to count the tasks with their status which is done for the every assignee in project, and after doing this it simply returns the result.
+
+# 2. progress:
+. Then the second action which is progress, now it gives the output related to the progress of a specific project. in this method the logic of counting the total tasks and completed tasks of this project is present, further it also calculates the percentage of the completed tasks.
+
+# 3. work:
+. Next the third action which is work it simply shows the performance of the team like how much work is done by the given team and in it the logic of giving all the users alongside their number of total tasks and completed the tasks is present.
+
+# 4. project_tasks:
+. Now the fourth action which is project tasks it calculates and shows the total number of tasks related to specific project. In this action with the use of raw sql the logic of joining the task and the project tables is done, also it counts the number of the tasks which are grouped by a given project and after doing this it gives the output of showing the each project with its related number of total tasks.
+
