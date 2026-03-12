@@ -11,9 +11,9 @@ from accounts.models import User
 from rest_framework.response import Response
 from activities.models import Comment
 from django.db import transaction
-from notifications.models import Activity
 from tasks.celery_tasks import task_email
 from django.core.cache import cache
+from rest_framework import status
 
 # Create your views here.
 class TagViewset(viewsets.ModelViewSet):
@@ -64,7 +64,7 @@ class TaskViewset(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
        serializer = self.get_serializer(data=request.data)
        serializer.is_valid(raise_exception=True)
-       task = serializer.save()
+       task = serializer.save(created_by = request.user)
        subtasks = request.data.get('subtasks')
        
        if subtasks:
@@ -73,10 +73,9 @@ class TaskViewset(viewsets.ModelViewSet):
                
        cache.delete(f'tasks{request.user.id}')
        
-       Activity.objects.create(user=request.user, task=task, work='task is created')
        if task.assignee:
          task_email.delay(task.assignee.email, task.title)
-       return Response(serializer.data)
+       return Response(serializer.data, status=status.HTTP_201_CREATED)
    
     @transaction.atomic
     @action(detail=True, methods=['post'])
@@ -113,7 +112,7 @@ class TaskViewset(viewsets.ModelViewSet):
     def comment(self, request, pk=None):
       task = self.get_object()
       content = request.data.get('content')
-      Comment.objects.create(task=task, user=request.user, content=content)
+      Comment.objects.create(task=task, author=request.user, content=content)
       return Response({'msg': 'have some shame friend'})
     
     def get_queryset(self):

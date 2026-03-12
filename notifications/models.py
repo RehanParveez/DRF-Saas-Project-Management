@@ -6,7 +6,7 @@ from tasks.models import Task
 class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activity')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='activity')
-    work = models.CharField(max_length=25)
+    work = models.CharField(max_length=55)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

@@ -120,3 +120,55 @@ In this project i added two signals in the tasks app, which are:
 # 4. project_tasks:
 . Now the fourth action which is project tasks it calculates and shows the total number of tasks related to specific project. In this action with the use of raw sql the logic of joining the task and the project tables is done, also it counts the number of the tasks which are grouped by a given project and after doing this it gives the output of showing the each project with its related number of total tasks.
 
+
+## Use of testing for the task apps taskviewset logic:
+
+. The addition of the tests in the tasks apps tests.py file is related to testing the logic like whether the taskviewsets main endpoints like crud operations and also the custom actions are working properly or not?
+
+. So in order to that there is a TaskViewsetTest class of test and in it logic of different testing methods is present. Further this test class is extending the authentication logic from the TaskTestBase class of test and which is further extending the authentcation logic from the ParentTest class of test present in the test.py file of the accounts app.
+
+. Now first fo all in the setup method of the TaskTestBase class of test, the needed objects like user, project, board, etc are created so that for testing apis properly each and every method of test can use these objects.
+
+- now the all the testing methods in the TaskViewsetTest class of tests are following:
+
+1. create task test method:
+
+. This is the first testing method which is related to creating a task. Now in this test the logic for sending a POST method request is present and this request is sent to the task endpoint, and also in this request the needed data like title, description, project, board, and the assignee, etc is present.
+
+. So in this method when the request is sent then the test checks like whether the response of status is correct or not? and also whether the task has been created in the database or not.
+
+2. list tasks test method:
+
+. Next the second method of testing is list test method which has the functionlaity of checking the getting of the tasks data. First in this method the a request of GET method is sent to the endpoint of the task list.
+. And the use of this test is for to check like whether the api is successfully returning the tasks list.
+
+3. update task test method:
+
+. Next the update test method is about the checking of logic of updating an existing task. So in this test method simply a PUT request is sent to the specific endpoint of task endpoint and the request has the data of the updated task.
+. Furhter after the request is sent then the test checks like whether in the database the data of task has been updated or not.
+
+4. delete task test method:
+
+. Next the fourth method of testing is delete test method which has logic related to deleting a task. Now in this test a DELETE request has beem sent to the endpoint of the specific task.
+. Then after the request the test checks like whether the response api is returning is correct or not? and after doing this it confirms the point that from the database the task has been removed successfully.
+
+5. giving task action test method:
+
+. Next this giving task action testing method is present which is responsible for giving atask to the user who is specific.
+. This test method first sends a request to the giving endpoint which has the user id and after doing this it checks like whether the assignee field being used by the task has been updated correctly in the database or not.
+
+6. changing task status test method:
+
+. Next this changing status action test method has the logic of checking like whether the request with the new value of status has been sent or not.
+. And after sending the request this test method checks like if the status of the task has been updated properly or not.
+
+7. completed task action test method:
+
+. Next this completed task action test method has the logic of checking like whether the status of the task has been updated to completed status or not.
+. So this test method after calling the endpoint checks like whether in the database the status of the task has been changed to be present with the completed status or not.
+
+8. adding comment action test method:
+
+. Next this adding comment action test method has the logic of checking like whether the request to the endpoint of the comment action has been sent with the content of comment or not.
+. So this test method checks if the comment has been created successfully and then also has been linked with the correct task and the user.
+
