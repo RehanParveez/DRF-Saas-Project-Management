@@ -172,3 +172,46 @@ In this project i added two signals in the tasks app, which are:
 . Next this adding comment action test method has the logic of checking like whether the request to the endpoint of the comment action has been sent with the content of comment or not.
 . So this test method checks if the comment has been created successfully and then also has been linked with the correct task and the user.
 
+
+## Use of testing for the reports apps reportviewset logic:
+
+. The addition of the tests logic in the tests.py file of reports is similar to the tasks app tests.py file means it is related to testing the apis which are for reporting purposes in the reportviewset.
+
+First of all again like the taskviewsettest class inside the reportviewsettest class the setUp method is created which contains the data setup about the logic of different test methods which are being used for the testing of different endpoints of reporting.
+
+. Now the reportviewsettest class first extends the parenttest class which is present in the accounts app, and this is done simply to avoid the repetition of the authentication logic again bcz the authentication is already handled insde the parenttest class, so thats why extending the authentication logic from it is done.
+
+# Data in the setup method:
+
+Now inside the setUp method first the required objects are created in order to get the data for the work on the reporting apis.
+
+- Mainly these objects are created:
+. A second user -> named user2 bcz first one is already present in the accounts app testing setup,
+. Next an organization,
+. Then a project which is linked with the organization,
+. Then a board which is linked with the project,
+. And then multiple tasks which have different type of statuses and the different assignees related to them.
+
+- Now the testing method in the reportviewsettest are:
+
+1. completed task action test method:
+
+. In this test, first of all a GET method request is sent to the present endpoint of the completed_task in the reports api,
+. Then after sending the request test checks like whether the status code of the response is correct? and also whether the dat being returned has the record of number of completed task which is expected. so thats how this method confirms that the api are correctly returning the completed tasks data which are grouped related to the users.
+
+2. progress action test method:
+
+. Next this test method for a specific project checks the progress via a endpoint of reporting.
+. Now in this test again first a GET method request is sent to the endpoint of progress and alongisde this while the project id is also passed in the url path. After this when the request is performed then it checks like whether the total number of returned tasks is correct or not, also whether the number of completed tasks is correct or not as well.
+
+3. work action test method:
+
+Then next the logic of work test method is mainly responsible for checking the performance related reporting.
+. So in this test, again firstly a GET method request is sent to the endpoint of work.
+. Then after this the request which is sent it checks like whether the api data being returned is according to the expected number of work records, means calculation of the performance needs to be precise so that why.
+
+4. project tasks action test method:
+
+Next this test method is related to checking the task reporting endpoint at project level.
+Now in this test, when a GET method request is sent to the endpoint of the project_tasks, then this request checks like whether the project name being returned is correct or not? also whether the total number of tasks which are linked with the project is correct or not.
+
